@@ -97,12 +97,26 @@
                     </div>
                     <div class="card-body">
                         <div class="row g-3 mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="nombre" class="form-label d-flex justify-content-between align-items-center">
                                     Nombre y Apellido:
                                     <span class="character-counter" id="nombre-counter"></span>
                                 </label>
                                 <input type="text" id="nombre" name="nombre" class="form-control" maxlength="28" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="titulo" class="form-label">
+                                    Título Abreviado:
+                                </label>
+                                <select id="titulo" name="titulo" class="form-select">
+                                    <option value="">Seleccione un título...</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Lic.">Lic.</option>
+                                    <option value="Cr.">Cr.</option>
+                                    <option value="Arq.">Arq.</option>
+                                    <option value="Ing.">Ing.</option>
+                                </select>
                             </div>
                             
                             <div class="col-md-6">
@@ -114,17 +128,24 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="cargo" class="form-label d-flex justify-content-between align-items-center">
-                                    Cargo:
+                                    Puesto:
                                     <span class="character-counter" id="cargo-counter"></span>
                                 </label>
                                 <input type="text" id="cargo" name="cargo" class="form-control" maxlength="35" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label for="interno" class="form-label d-flex justify-content-between align-items-center">
                                     Interno:
                                     <span class="character-counter" id="interno-counter"></span>
                                 </label>
                                 <input type="text" id="interno" name="interno" class="form-control" maxlength="10">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="celular" class="form-label d-flex justify-content-between align-items-center">
+                                    Celular:
+                                    <span class="character-counter" id="celular-counter"></span>
+                                </label>
+                                <input type="text" id="celular" name="celular" class="form-control" maxlength="15">
                             </div>
                         </div>
                         <div class="text-center">
@@ -170,8 +191,30 @@
         { id: 'nombre', max: 28 },
         { id: 'cargo', max: 35 },
         { id: 'area', max: 35 },
-        { id: 'interno', max: 10 }
+        { id: 'interno', max: 10 },
+        { id: 'celular', max: 15 }
     ];
+
+    // Función para actualizar el máximo de caracteres del nombre según el título
+    function actualizarMaxNombre() {
+        const titulo = document.getElementById('titulo').value;
+        const nombreInput = document.getElementById('nombre');
+        const nombreCounter = document.getElementById('nombre-counter');
+        const maxNombre = titulo ? 24 : 28;
+        
+        nombreInput.maxLength = maxNombre;
+        campos[0].max = maxNombre; // Actualizar el máximo en el array de campos
+        
+        // Actualizar el contador si el nombre excede el nuevo máximo
+        if (nombreInput.value.length > maxNombre) {
+            nombreInput.value = nombreInput.value.substring(0, maxNombre);
+        }
+        updateCounter(nombreInput, nombreCounter, maxNombre);
+        updateInputStyle(nombreInput, nombreCounter, maxNombre);
+    }
+
+    // Agregar evento al select de título
+    document.getElementById('titulo').addEventListener('change', actualizarMaxNombre);
 
     // Inicializar contadores y validación para cada campo
     campos.forEach(campo => {
@@ -219,9 +262,11 @@
         event.preventDefault();
 
         const nombre = document.getElementById('nombre').value;
+        const titulo = document.getElementById('titulo').value;
         const area = document.getElementById('area').value;
         const cargo = document.getElementById('cargo').value;
         const interno = document.getElementById('interno').value;
+        const celular = document.getElementById('celular').value;
 
         if (nombre && area && cargo) {
             const firmaHtml = `
@@ -241,7 +286,7 @@
                                      margin-left: 14px;
                                      margin-top: 0;
                                      padding: 0;">
-                            ${nombre}
+                            ${titulo ? `${titulo} ` : ''}${nombre}
                         </span>
 
                         <p style="color: rgb(0, 0, 0);
@@ -254,12 +299,12 @@
                                   width: 100%;">
                             <span style="display: block; color: #fff; background: #367fc2; height: 16px; line-height: 16px; width: 100%; font-weight: bold"><b style="margin-left: 14px;">${cargo}</b></span>
                             <span style="color: #367fc2;  font-weight: bold; margin-left: 14px; height: 15px;">${area}</span><br>
-                            <span style="color: #367fc2; margin-left: 14px;"><b>Tel:</b> 0810 555 2553${interno ? ` | <b>Int:</b> ${interno}` : ''}</span>
+                            <span style="color: #367fc2; margin-left: 14px;"><b>Tel:</b> 0810 555 2553${interno ? ` | <b>Int:</b> ${interno}` : ''}${celular ? ` | <b>Cel:</b> ${celular}` : ''}</span>
                             
                         </p>
                     </div>
                 </div>
-                <small style="position: relative; top:-2px;text-align: center; display: inline-block; color: rgb(0, 0, 0); width: 100%; padding: 5px 5% 0px; border-top: 1px solid #367fc2; font-size: 9px; line-height: 13px; font-family: DM Sans;">
+                <small style="position: relative; top:-1px;text-align: center; display: inline-block; color: rgb(0, 0, 0); width: 100%; padding: 5px 5% 0px; border-top: 1px solid #367fc2; font-size: 9.5px; line-height: 13px; font-family: DM Sans;">
                     El presente e-mail contiene informaci&oacute;n confidencial. 
                     La divulgaci&oacute;n, copia o distribuci&oacute;n est&aacute; prohibida.
                 </small>
