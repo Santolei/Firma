@@ -274,44 +274,49 @@
 
         if (nombre && area && cargo) {
             const firmaHtml = `
-                <div class="d-flex">
-                    <div>
-                        <img src="logo.jpg" style="width: 200px;">
-                    </div>
-                    
-                    <div style="border-left: 1px solid #367fc2;
-                                width: 305px;
-                                text-align: left;">
+                <div style="width: 505px; background-color: #FFFFFF; padding: 10px; font-family: 'DM Sans', Arial, sans-serif;">
+                    <div style="display: flex; align-items: start;">
+                        <div style="flex-shrink: 0;">
+                            <img src="logo.jpg" style="width: 200px; display: block;">
+                        </div>
                         
-                        <span style="color: #367fc2;
-                                     font-family: 'DM Sans';
-                                     font-size: 19px;
-                                     font-weight: bold;
-                                     margin-left: 14px;
-                                     margin-top: 0;
-                                     padding: 0;">
-                            ${titulo ? `${titulo} ` : ''}${nombre}
-                        </span>
-
-                        <p style="color: rgb(0, 0, 0);
-                                  font-family: 'DM Sans';
-                                  font-size: 12px;
-                                  margin-bottom: 3px;
-                                  margin-top: 0;
-                                  padding: 0;
-                                  vertical-align: top;
-                                  width: 100%;">
-                            <span style="display: block; color: #fff; background: #367fc2; height: 16px; line-height: 16px; width: 100%; font-weight: bold"><b style="margin-left: 14px;">${cargo}</b></span>
-                            <span style="color: #367fc2;  font-weight: bold; margin-left: 14px; height: 15px;">${area}</span><br>
-                            <span style="color: #367fc2; margin-left: 14px;"><b>Tel:</b> 0810 555 2553${interno ? ` | <b>Int:</b> ${interno}` : ''}${celular ? ` | <b>Cel:</b> ${celular}` : ''}</span>
+                        <div style="border-left: 1px solid #367fc2;
+                                    width: 305px;
+                                    text-align: left;
+                                    padding-left: 0;">
                             
-                        </p>
+                            <span style="color: #367fc2;
+                                         font-family: 'DM Sans', Arial, sans-serif;
+                                         font-size: 19px;
+                                         font-weight: bold;
+                                         margin-left: 14px;
+                                         margin-top: 0;
+                                         padding: 0;
+                                         display: block;">
+                                ${titulo ? `${titulo} ` : ''}${nombre}
+                            </span>
+
+                            <div style="color: rgb(0, 0, 0);
+                                      font-family: 'DM Sans', Arial, sans-serif;
+                                      font-size: 12px;
+                                      margin-bottom: 3px;
+                                      margin-top: 0;
+                                      padding: 0;
+                                      vertical-align: top;
+                                      width: 100%;">
+                                <span style="display: block; color: #fff; background: #367fc2; height: 16px; line-height: 16px; width: 100%; font-weight: bold"><b style="margin-left: 14px;">${cargo}</b></span>
+                                <span style="color: #367fc2; font-weight: bold; margin-left: 14px; height: 15px; display: block; margin-top: 3px;">${area}</span>
+                                <span style="color: #367fc2; margin-left: 14px; display: block; margin-top: 3px;"><b>Tel:</b> 0810 555 2553${interno ? ` | <b>Int:</b> ${interno}` : ''}${celular ? ` | <b>Cel:</b> ${celular}` : ''}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 5px; text-align: center; border-top: 1px solid #367fc2; padding-top: 5px;">
+                        <small style="color: rgb(0, 0, 0); font-size: 9px; line-height: 13px; font-family: 'DM Sans', Arial, sans-serif;">
+                            El presente e-mail contiene informaci&oacute;n confidencial. 
+                            La divulgaci&oacute;n, copia o distribuci&oacute;n est&aacute; prohibida.
+                        </small>
                     </div>
                 </div>
-                <small style="position: relative; top:-1px;text-align: center; display: inline-block; color: rgb(0, 0, 0); width: 100%; padding: 5px 5% 0px; border-top: 1px solid #367fc2; font-size: 9px; line-height: 13px; font-family: DM Sans;">
-                    El presente e-mail contiene informaci&oacute;n confidencial. 
-                    La divulgaci&oacute;n, copia o distribuci&oacute;n est&aacute; prohibida.
-                </small>
             `;
 
             const firmaDiv = document.getElementById('firma');
