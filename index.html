@@ -106,7 +106,7 @@
                                     Nombre y Apellido:
                                     <span class="character-counter" id="nombre-counter"></span>
                                 </label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" maxlength="28" required>
+                                <input type="text" id="nombre" name="nombre" class="form-control" maxlength="27" required>
                             </div>
                             
                             <div class="col-md-6">
@@ -196,7 +196,7 @@
     <script>
     // Configuración de los campos y sus límites
     const campos = [
-        { id: 'nombre', max: 28 },
+        { id: 'nombre', max: 27 },
         { id: 'cargo', max: 35 },
         { id: 'area', max: 35 },
         { id: 'interno', max: 10 },
@@ -208,7 +208,7 @@
         const titulo = document.getElementById('titulo').value;
         const nombreInput = document.getElementById('nombre');
         const nombreCounter = document.getElementById('nombre-counter');
-        const maxNombre = titulo ? 24 : 28;
+        const maxNombre = titulo ? 24 : 27;
         
         nombreInput.maxLength = maxNombre;
         campos[0].max = maxNombre; // Actualizar el máximo en el array de campos
