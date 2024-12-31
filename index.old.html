@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -171,26 +170,7 @@
         
         <div class="row text-center mt-3" style="width: 100%; max-width: 400px; margin: auto">
             <a id="descargarBtn" class="btn btn-success mb-3" style="display:none;">Descargar Imagen</a>     
-            <button id="mostrarHtmlBtn" class="btn btn-secondary" style="display:none;" data-bs-toggle="modal" data-bs-target="#modalHtml">Mostrar Código HTML</button>       
-        </div>
-    </div>
-
-    <!-- Modal para mostrar el código HTML -->
-    <div class="modal fade" id="modalHtml" tabindex="-1" aria-labelledby="modalHtmlLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalHtmlLabel">Código HTML</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <textarea id="codigoHtml" class="form-control" rows="10" readonly></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="copiarHtml()">Copiar al Portapapeles</button>
-                </div>
-            </div>
+            <button id="descargarHtmlBtn" class="btn btn-secondary" style="display:none;">Descargar firma HTML</button>       
         </div>
     </div>
 
@@ -282,7 +262,7 @@
                 <div style="width: 505px; background-color: #FFFFFF; font-family: 'DM Sans', Arial, sans-serif;">
                     <div style="display: flex; align-items: start;">
                         <div style="flex-shrink: 0;">
-			    <img src="https://www.sanatorioallende.com/wp-content/themes/sanatorio/images/logos/logomail.jpg" style="width: 200px; display: block;">
+                            <img src="https://www.sanatorioallende.com/wp-content/themes/sanatorio/images/logos/logomail.jpg" style="width: 200px; display: block;">
                         </div>
                         
                         <div style="border-left: 1px solid #367fc2;
@@ -330,7 +310,7 @@
 
             // Mostrar botones de descarga
             document.getElementById('descargarBtn').style.display = 'block';
-            document.getElementById('mostrarHtmlBtn').style.display = 'block';
+            document.getElementById('descargarHtmlBtn').style.display = 'block';
 
             // Generar la imagen de la firma
             html2canvas(firmaDiv, {
@@ -348,27 +328,52 @@
                 downloadLink.href = imgData;
                 downloadLink.download = 'firma.png';
             });
-
-            // Mostrar código HTML en el modal 
-            document.getElementById('codigoHtml').value = formatHtml(firmaHtml.trim());
         } else {
             alert('Por favor, completa todos los campos antes de generar la firma.');
         }
     });
 
     function copiarHtml() {
-        const codigoHtml = document.getElementById('codigoHtml');
-        codigoHtml.select();
-        document.execCommand('copy');
-        alert('¡Código HTML copiado al portapapeles!');
+        const firmaHtml = document.getElementById('firma').outerHTML;
+        return formatHtml(firmaHtml);
     }
 
+    function descargarHtml() {
+        const contenido = copiarHtml();
+        const blob = new Blob([contenido], { 
+            type: 'text/html;charset=utf-8'
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'firma.html';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+
+    // Actualizar el evento del botón
+    document.getElementById('descargarHtmlBtn').addEventListener('click', descargarHtml);
+
     function formatHtml(html) {
-        const formattedHtml = html
-            .split('\n')
-            .map(line => line.trim())
-            .join('\n');
-        return formattedHtml;
+        // Crear un contenedor temporal para manipular el HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const firmaDiv = tempDiv.querySelector('#firma');
+
+        // Generar HTML compatible con clientes de correo antiguos usando tablas
+        const compatibleHtml = `
+&lt;table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; max-width: 500px; width: 100%; margin: 0 auto;"&gt;
+    &lt;tr&gt;
+        &lt;td style="padding: 10px; text-align: center;"&gt;
+            ${firmaDiv.innerHTML.replace(/display:\s*flex;?/g, '').replace(/align-items:\s*center;?/g, '')}
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+        `;
+
+        return compatibleHtml;
     }
     </script>
 
