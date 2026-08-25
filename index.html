@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Crear Firma de correo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -25,7 +28,7 @@
         }
 
         .card .card-header{
-            background-image: url(fondo.jpg) !important;
+            background-image: url(fondo.jpg?v=2026-08-21) !important;
             height: 95px;
         }
 
@@ -263,7 +266,7 @@
                 <div style="width: 505px; background-color: #FFFFFF; font-family: 'DM Sans', Arial, sans-serif;">
                     <div style="display: flex; align-items: start;">
                         <div style="flex-shrink: 0;">
-			    <img src="Logo para firmas de mailing.png" style="width: 200px; display: block;">
+			    <img src="logo.jpg?v=2026-08-21" style="width: 200px; display: block;">
                         </div>
                         
                         <div style="border-left: 1px solid #367fc2;
@@ -312,18 +315,28 @@
             // Mostrar botones de descarga
             document.getElementById('descargarBtn').style.display = 'block';
 
-            // Generar la imagen de la firma
+            // Generar la imagen de la firma.
+            // Se renderiza en alta resolución (supersampling) y luego se reduce a 505px con
+            // suavizado de máxima calidad: el archivo final mantiene su tamaño (Gmail lo toma
+            // automático) pero el texto y el logo quedan más nítidos que renderizando a 1x.
+            const SS = 3; // factor de supersampling
             html2canvas(firmaDiv, {
                 width: 505,
-                scale: 1,
+                scale: SS,
                 useCORS: true,
                 backgroundColor: '#FFFFFF'
-            }).then(canvas => {
-                const ctx = canvas.getContext('2d');
+            }).then(hiRes => {
+                const out = document.createElement('canvas');
+                out.width = 505;
+                out.height = Math.round(hiRes.height / SS);
+                const ctx = out.getContext('2d');
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, out.width, out.height);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(hiRes, 0, 0, out.width, out.height);
 
-                const imgData = canvas.toDataURL("image/png");
+                const imgData = out.toDataURL("image/png");
                 const downloadLink = document.getElementById('descargarBtn');
                 downloadLink.href = imgData;
                 downloadLink.download = 'firma.png';
